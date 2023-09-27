@@ -1,0 +1,1 @@
+add_library(native_port_communication SHARED NativePortCommunication.cpp)

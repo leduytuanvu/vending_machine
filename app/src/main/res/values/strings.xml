@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Application name -->
+    <string name="app_name">VendingMachineApp</string>
+
+    <!-- Vending Machine screen -->
+    <string name="vendingMachine_title">Vending Machine</string>
+    <string name="select_product">Select Product</string>
+
+    <!-- Payment screen -->
+    <string name="payment_title">Payment</string>
+    <string name="proceed_to_pay">Proceed to Pay</string>
+
+    <!-- Settings screen -->
+    <string name="settings_title">Settings</string>
+    <string name="change_language">Change Language</string>
+    <string name="change_theme">Change Theme</string>
+
+    <!-- Set Up Slot screen -->
+    <string name="setup_slot_title">Set Up Slot</string>
+    <string name="add_new_slot">Add New Slot</string>
+
+    <!-- Error messages -->
+    <string name="error_network">Network Error</string>
+    <string name="error_unknown">Unknown Error</string>
+
+    <!-- Loading dialog -->
+    <string name="loading">Loading…</string>
+
+    <!-- Login screen -->
+    <string name="login_title">Login</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button">Log In</string>
+
+    <!-- General -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Custom strings -->
+    <string name="custom_string1">Custom 1</string>
+    <string name="custom_string2">Custom 2</string>
+
+</resources>

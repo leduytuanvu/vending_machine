@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Primary colors -->
+    <color name="primary">#6200EA</color>
+    <color name="primaryVariant">#3700B3</color>
+    <color name="primaryDark">#3700B3</color>
+    <color name="primaryLight">#BB86FC</color>
+
+    <!-- Secondary colors -->
+    <color name="secondary">#03DAC6</color>
+    <color name="secondaryVariant">#018786</color>
+    <color name="secondaryLight">#BB86FC</color>
+
+    <!-- Background and surface colors -->
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+
+    <!-- Text colors -->
+    <color name="textPrimary">#000000</color>
+    <color name="textSecondary">#808080</color>
+
+    <!-- Error colors -->
+    <color name="error">#B00020</color>
+
+    <!-- Other colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <!-- Loading dialog -->
+    <color name="loadingBackground">#CC000000</color>
+
+    <!-- Custom colors -->
+    <color name="customColor1">#FF5733</color>
+    <color name="customColor2">#33FF57</color>
+
+</resources>
