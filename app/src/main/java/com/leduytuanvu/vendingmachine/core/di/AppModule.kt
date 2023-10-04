@@ -1,18 +1,11 @@
 package com.leduytuanvu.vendingmachine.core.di
 
-import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
-import com.leduytuanvu.vendingmachine.core.common.AppConstants
-import com.leduytuanvu.vendingmachine.core.datasource.ApiDataSource
-import com.leduytuanvu.vendingmachine.core.datasource.ApiService
-import com.leduytuanvu.vendingmachine.core.datasource.SharedPreferencesDataSource
-import com.leduytuanvu.vendingmachine.core.datasource.StorageDataSource
-import com.leduytuanvu.vendingmachine.core.network.RetrofitConfig
+import com.leduytuanvu.vendingmachine.core.datasource.portConnectionDataSource.PortConnectionDataSource
+import com.leduytuanvu.vendingmachine.core.datasource.sharedPreferencesDataSource.SharedPreferencesDataSource
+import com.leduytuanvu.vendingmachine.core.datasource.storageDataSource.StorageDataSource
 import com.leduytuanvu.vendingmachine.core.utils.ErrorHandler
-import com.leduytuanvu.vendingmachine.core.utils.LanguageUtils
 import com.leduytuanvu.vendingmachine.core.utils.Logger
-import com.leduytuanvu.vendingmachine.core.utils.ThemeUtils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,4 +40,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideLogger(): Logger = Logger
+
+    @Provides
+    @Singleton
+    fun providePortConnectionDataSource(): PortConnectionDataSource = PortConnectionDataSource()
 }

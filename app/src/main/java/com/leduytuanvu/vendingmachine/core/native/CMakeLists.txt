@@ -1,1 +1,5 @@
-add_library(native_port_communication SHARED NativePortCommunication.cpp)
+cmake_minimum_required(VERSION 3.22.1)
+project("NativePortCommunication")
+add_library(NativePortCommunication SHARED NativePortCommunication.cpp)
+find_library(log-lib log)
+target_link_libraries(NativePortCommunication ${log-lib})

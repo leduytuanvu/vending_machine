@@ -1,6 +1,6 @@
 package com.leduytuanvu.vendingmachine.core.network
 
-import com.leduytuanvu.vendingmachine.core.datasource.ApiService
+import com.leduytuanvu.vendingmachine.core.datasource.apiDataSource.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
