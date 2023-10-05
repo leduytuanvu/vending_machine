@@ -1,0 +1,4 @@
+package com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.presentation.composables.inchingSetUpSystemSettings
+
+class InchingSetUpSystemSettingsComposable {
+}

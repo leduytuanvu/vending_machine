@@ -1,6 +1,7 @@
 package com.leduytuanvu.vendingmachine.core.datasource.portConnectionDataSource
 
 import android.annotation.SuppressLint
+import android.util.Pair
 import android.util.Log
 import com.leduytuanvu.vendingmachine.core.common.AppByteArrays
 import com.leduytuanvu.vendingmachine.core.utils.Logger
@@ -18,6 +19,9 @@ class PortConnectionDataSource {
     // CoroutineScope (Dispatchers.IO + SupervisorJob())
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
+    // Port connection helper
+    private val portConnectionHelperDataSource = PortConnectionHelperDataSource()
+
     // Data from cash box
     private val _dataFromCashBox = MutableStateFlow<String>("")
     val dataFromCashBox: StateFlow<String> = _dataFromCashBox
@@ -34,29 +38,43 @@ class PortConnectionDataSource {
     // Status of cash box
     private var fdPortCashBox: Int = -1
 
-    // Port connection helper
-    private val portConnectionHelperDataSource = PortConnectionHelperDataSource()
+    fun checkConnectPortVendingMachine(port: String) : Int {
+        return portConnectionHelperDataSource.openPortVendingMachine("/dev/", port, 9600)
+    }
+
+    fun checkConnectPortCashBox(port: String) : Int {
+        return portConnectionHelperDataSource.openPortCashBox("/dev/", port, 9600)
+    }
+
+    fun fetchPortStatuses(): Array<Pair<String, Boolean>> {
+        return portConnectionHelperDataSource.getAllSerialPortsStatus()
+    }
+
+    fun makeDataEmpty() {
+        _dataFromCashBox.value = ""
+        _dataFromVendingMachine.value = ""
+    }
 
     fun getAllSerialPorts(): Array<String> {
         val listSerialPort = portConnectionHelperDataSource.getAllSerialPorts()
         coroutineScope.launch { _listSerialPort.emit(listSerialPort) }
-        Logger.info("${javaClass.simpleName}: list size serial ports = ${listSerialPort.size}")
+        Logger.info("PortConnectionDataSource: list size serial ports is ${listSerialPort.size}")
         return listSerialPort
     }
 
     // Connect vending machine port
     fun connectVendingMachinePort() {
         fdPortVendingMachine = portConnectionHelperDataSource.openPortVendingMachine("/dev/", "ttyS4", 9600)
-        Logger.info("${javaClass.simpleName}: fdPortVendingMachine = $fdPortVendingMachine")
+        var status = "open"
+        if (fdPortVendingMachine == -1) status = "close"
+        Logger.info("PortConnectionDataSource: port vending machine is $status")
     }
     // Connect cash box ports
     fun connectCashBoxPort() {
         fdPortCashBox = portConnectionHelperDataSource.openPortCashBox("/dev/", "ttyS3", 9600)
-        Logger.info("${javaClass.simpleName}: fdPortCashBox = $fdPortCashBox")
-    }
-
-    fun checkConnectPort(port: String) : Int {
-        return portConnectionHelperDataSource.openPortVendingMachine("/dev/", port, 9600)
+        var status = "open"
+        if (fdPortCashBox == -1) status = "close"
+        Logger.info("PortConnectionDataSource: port cash box is $status")
     }
 
     // Disconnect vending machine ports
@@ -86,7 +104,7 @@ class PortConnectionDataSource {
                 try {
                     portConnectionHelperDataSource.startReadingVendingMachine(512) { data ->
                         val dataHexString = byteArrayToHexString(data)
-                        Logger.info("PortConnectionDataSource: data = $dataHexString")
+                        Logger.info("PortConnectionDataSource: data is $dataHexString")
                         coroutineScope.launch {
                             _dataFromVendingMachine.emit(dataHexString)
                         }
@@ -107,7 +125,7 @@ class PortConnectionDataSource {
                 try {
                     portConnectionHelperDataSource.startReadingCashBox(512) { data ->
                         val dataHexString = byteArrayToHexString(data)
-                        Logger.info("PortConnectionDataSource: data = $dataHexString")
+                        Logger.info("PortConnectionDataSource: data is $dataHexString")
                         coroutineScope.launch {
                             _dataFromCashBox.emit(dataHexString)
                         }
@@ -129,6 +147,7 @@ class PortConnectionDataSource {
         return portConnectionHelperDataSource.writeDataPortCashBox(byteArray)
     }
 
+    // Array byte to hex string
     private fun byteArrayToHexString(byteArray: ByteArray): String {
         return byteArray.joinToString(",") { "%02X".format(it) }
     }

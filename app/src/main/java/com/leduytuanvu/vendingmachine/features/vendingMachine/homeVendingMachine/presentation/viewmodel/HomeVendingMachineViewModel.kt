@@ -30,8 +30,8 @@ class HomeVendingMachineViewModel @Inject constructor(
     }
 
     fun writeByteArrayToPort() {
-        val bytesWritten = portConnectionDataSource.sendCommandVendingMachine(AppByteArrays.ttys3TurnOnLight)
-        val bytesWritten2 = portConnectionDataSource.sendCommandCashBox(AppByteArrays.ttys4ResetCashBox)
+        val bytesWritten = portConnectionDataSource.sendCommandVendingMachine(AppByteArrays.vendingMachineTurnOnLight)
+        val bytesWritten2 = portConnectionDataSource.sendCommandCashBox(AppByteArrays.cashBoxReset)
         if (bytesWritten == -1) {
             Logger.error("Error writing to port")
         }

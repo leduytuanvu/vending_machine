@@ -1,12 +1,12 @@
 package com.leduytuanvu.vendingmachine.core.datasource.portConnectionDataSource
-
+import android.util.Pair
 import com.leduytuanvu.vendingmachine.core.utils.Logger
 
 class PortConnectionHelperDataSource {
     init {
         // Load the JNI library
         System.loadLibrary("NativePortCommunication")
-        Logger.info("${javaClass.simpleName}: loading native port communication library successfully")
+        Logger.info("PortConnectionHelperDataSource: loading native port communication library successfully")
     }
 
     // Open, close, read, write vending machine port
@@ -14,13 +14,16 @@ class PortConnectionHelperDataSource {
     external fun closePortVendingMachine()
     external fun readDataPortVendingMachine(bufferSize: Int, callback: DataReceivedCallbackVendingMachine)
     external fun writeDataPortVendingMachine(data: ByteArray): Int
+
     // Open, close, read, write vending machine port
     external fun openPortCashBox(path: String, portName: String, baudRate: Int): Int
     external fun closePortCashBox()
     external fun readDataPortCashBox(bufferSize: Int, callback: DataReceivedCallbackCashBox)
     external fun writeDataPortCashBox(data: ByteArray): Int
 
+    // Get all serial ports
     external fun getAllSerialPorts(): Array<String>
+    external fun getAllSerialPortsStatus(): Array<Pair<String, Boolean>>
 
     // Start reading vending machine port
     fun startReadingVendingMachine(bufferSize: Int, callback: (ByteArray) -> Unit) {
@@ -30,12 +33,13 @@ class PortConnectionHelperDataSource {
                 try {
                     Thread.sleep(50)
                 } catch (e: InterruptedException) {
-                    Logger.error("${javaClass.simpleName}: ${e.message}")
+                    Logger.error("PortConnectionHelperDataSource: ${e.message}")
                 }
             }
         }
         readDataPortVendingMachine(bufferSize, readDataCallbackVendingMachine)
     }
+
     // Start reading cash box port
     fun startReadingCashBox(bufferSize: Int, callback: (ByteArray) -> Unit) {
         val readDataCallbackCashBox = object : DataReceivedCallbackCashBox {
@@ -44,7 +48,7 @@ class PortConnectionHelperDataSource {
                 try {
                     Thread.sleep(50)
                 } catch (e: InterruptedException) {
-                    Logger.error("${javaClass.simpleName}: ${e.message}")
+                    Logger.error("PortConnectionHelperDataSource: ${e.message}")
                 }
             }
         }

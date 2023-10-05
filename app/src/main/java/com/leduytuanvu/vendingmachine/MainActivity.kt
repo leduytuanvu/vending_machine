@@ -33,8 +33,8 @@ class MainActivity : ComponentActivity() {
         portConnectionDataSource.connectVendingMachinePort()
 
         // Read data from ports
-        portConnectionDataSource.startReadingVendingMachine()
         portConnectionDataSource.startReadingCashBox()
+        portConnectionDataSource.startReadingVendingMachine()
 
         setContent {
             val homeSettingsViewModel: HomeSettingsViewModel = hiltViewModel()

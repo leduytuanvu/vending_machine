@@ -102,7 +102,6 @@ Java_com_leduytuanvu_vendingmachine_core_datasource_portConnectionDataSource_Por
     }
 }
 
-
 extern "C" JNIEXPORT jint
 Java_com_leduytuanvu_vendingmachine_core_datasource_portConnectionDataSource_PortConnectionHelperDataSource_openPortCashBox(JNIEnv *env, jobject, jstring path, jstring portName, jint baudRate) {
     // Convert jstring to const char* for path and portName
@@ -146,7 +145,6 @@ Java_com_leduytuanvu_vendingmachine_core_datasource_portConnectionDataSource_Por
     env->ReleaseStringUTFChars(portName, portNameStr);
     return 0; // Return 0 on success
 }
-
 
 extern "C" JNIEXPORT jint
 Java_com_leduytuanvu_vendingmachine_core_datasource_portConnectionDataSource_PortConnectionHelperDataSource_writeDataPortCashBox(JNIEnv *env, jobject, jbyteArray data) {
@@ -195,7 +193,6 @@ Java_com_leduytuanvu_vendingmachine_core_datasource_portConnectionDataSource_Por
     }
 }
 
-
 extern "C" JNIEXPORT void JNICALL
 Java_com_leduytuanvu_vendingmachine_core_datasource_portConnectionDataSource_PortConnectionHelperDataSource_closePortCashBox(JNIEnv *env, jobject) {
     if (serialPortCashBox != -1) {
@@ -220,9 +217,8 @@ Java_com_leduytuanvu_vendingmachine_core_datasource_portConnectionDataSource_Por
         closedir(dir);
     } else {
         // Failed to open directory
-        return NULL;
+        return nullptr;
     }
-
     jobjectArray result = env->NewObjectArray(portNames.size(), env->FindClass("java/lang/String"), nullptr);
     for (int i = 0; i < portNames.size(); i++) {
         env->SetObjectArrayElement(result, i, env->NewStringUTF(portNames[i].c_str()));
@@ -230,3 +226,43 @@ Java_com_leduytuanvu_vendingmachine_core_datasource_portConnectionDataSource_Por
 
     return result;
 }
+
+extern "C" JNIEXPORT jobjectArray JNICALL
+Java_com_leduytuanvu_vendingmachine_core_datasource_portConnectionDataSource_PortConnectionHelperDataSource_getAllSerialPortsStatus(JNIEnv *env, jobject) {
+    std::vector<std::pair<jstring, jobject>> portStatuses;
+    DIR *dir;
+    struct dirent *ent;
+    if ((dir = opendir("/dev")) != nullptr) {
+        jclass booleanClass = env->FindClass("java/lang/Boolean");
+        jmethodID booleanConstructor = env->GetMethodID(booleanClass, "<init>", "(Z)V");
+        while ((ent = readdir(dir)) != nullptr) {
+            std::string name = ent->d_name;
+            if (name.find("ttyS") == 0) {
+                std::string fullPath = "/dev/" + name;
+                int fd = open(fullPath.c_str(), O_RDWR | O_NOCTTY);
+                jstring portName = env->NewStringUTF(name.c_str());
+                jobject booleanObject;
+                if (fd == -1) {
+                    booleanObject = env->NewObject(booleanClass, booleanConstructor, JNI_FALSE);
+                } else {
+                    booleanObject = env->NewObject(booleanClass, booleanConstructor, JNI_TRUE);
+                    close(fd);
+                }
+                portStatuses.emplace_back(portName, booleanObject);
+            }
+        }
+        closedir(dir);
+    } else {
+        return nullptr;
+    }
+    jclass pairClass = env->FindClass("android/util/Pair");
+    jmethodID pairConstructor = env->GetMethodID(pairClass, "<init>", "(Ljava/lang/Object;Ljava/lang/Object;)V");
+    jobjectArray result = env->NewObjectArray(portStatuses.size(), pairClass, nullptr);
+    for (size_t i = 0; i < portStatuses.size(); i++) {
+        jobject pair = env->NewObject(pairClass, pairConstructor, portStatuses[i].first, portStatuses[i].second);
+        env->SetObjectArrayElement(result, i, pair);
+    }
+    return result;
+}
+
+
