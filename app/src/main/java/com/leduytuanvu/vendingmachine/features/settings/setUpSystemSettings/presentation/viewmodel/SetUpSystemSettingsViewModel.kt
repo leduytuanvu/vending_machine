@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.leduytuanvu.vendingmachine.base.VendingMachineViewModel
 import com.leduytuanvu.vendingmachine.core.datasource.sharedPreferencesDataSource.SharedPreferencesDataSource
 import com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.data.repositoryImpl.SetUpSystemSettingsRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,9 +19,10 @@ import javax.inject.Inject
 class SetUpSystemSettingsViewModel @Inject constructor(
     private val sharedPreferencesDataSource: SharedPreferencesDataSource,
     @ApplicationContext private val context: Context,
-) : ViewModel() {
+) : VendingMachineViewModel() {
 
-    val itemsList = listOf("PORT", "LIGHT", "SENSOR", "INCHING", "HEATING", "TEMPERATURE")
+    val itemsList = listOf("VENDING MACHINE TYPE", "CASH BOX TYPE", "PORT", "LIGHT", "SENSOR", "INCHING", "HEATING", "TEMPERATURE")
+
     private val _currentSelected = MutableStateFlow(itemsList[0])
     val currentSelected: StateFlow<String> get() = _currentSelected
 

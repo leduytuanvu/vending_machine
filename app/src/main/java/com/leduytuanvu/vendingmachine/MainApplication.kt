@@ -2,7 +2,10 @@ package com.leduytuanvu.vendingmachine
 
 import android.app.Application
 import android.util.Log
+import com.leduytuanvu.vendingmachine.core.datasource.sharedPreferencesDataSource.SharedPreferencesDataSource
+import com.leduytuanvu.vendingmachine.core.network.RetrofitConfig
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
 class MainApplication : Application() {

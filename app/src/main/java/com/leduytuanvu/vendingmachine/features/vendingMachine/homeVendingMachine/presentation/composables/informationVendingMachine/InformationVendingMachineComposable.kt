@@ -38,12 +38,7 @@ fun InformationVendingMachineComposable(navController: NavController) {
                     }
                 }
             },
-            modifier = Modifier
-                .align(Alignment.Center)
-                .clip(RoundedCornerShape(bottomEnd = 6.dp, topEnd = 6.dp))
-                .background(color = Color.Green, shape = RoundedCornerShape(6.dp))
-        ) {
-            Text(text = "Settings", color = Color.White)
-        }
+            text = "Settings"
+        )
     }
 }

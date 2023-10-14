@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import com.leduytuanvu.vendingmachine.features.vendingMachine.homeVendingMachine.data.models.Product
@@ -25,21 +27,10 @@ import com.leduytuanvu.vendingmachine.ui.composables.button.VendingMachineButton
 fun ListProductVendingMachineComposable(onTurnOnClick: () -> Unit) {
     val adsVendingMachineViewModel: AdsVendingMachineViewModel = hiltViewModel()
     val homeVendingMachineViewModel: HomeVendingMachineViewModel = hiltViewModel()
-    val productList = listOf(
-        Product("Product 1"),
-        Product("Product 2"),
-        Product("Product 3"),
-        Product("Product 4"),
-        Product("Product 1"),
-        Product("Product 2"),
-        Product("Product 3"),
-        Product("Product 4"),
-        Product("Product 1"),
-        Product("Product 2"),
-        Product("Product 3"),
-        Product("Product 4")
-    )
-    val chunkedList = productList.chunked(2)
+    val listProductVendingMachineViewModel: ListProductVendingMachineViewModel = hiltViewModel()
+
+    val listProductForSale by listProductVendingMachineViewModel.listOfProductForSale.collectAsState(initial = emptyList())
+    val chunkedList = listProductForSale.chunked(3)
 
     Box (modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxHeight()) {
@@ -71,7 +62,7 @@ fun ListProductVendingMachineComposable(onTurnOnClick: () -> Unit) {
                                         .aspectRatio(1f)
                                 ) {
                                     Text(
-                                        text = item.name,
+                                        text = item.product_name,
                                         modifier = Modifier.align(Alignment.Center)
                                     )
                                 }
@@ -85,26 +76,14 @@ fun ListProductVendingMachineComposable(onTurnOnClick: () -> Unit) {
         if (!homeVendingMachineViewModel.isAdsVisible.value) {
             VendingMachineButtonComposable(
                 onClick = { onTurnOnClick() },
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 8.dp)
-                    .clip(RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp))
-                    .background(color = Color.Red, shape = RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp))
-            ) {
-                Text(text = "Turn on", color = Color.White)
-            }
+                text = "Turn on"
+            )
         }
 
         VendingMachineButtonComposable(
             onClick = {  },
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(top = 8.dp)
-                .clip(RoundedCornerShape(bottomEnd = 6.dp, topEnd = 6.dp))
-                .background(color = Color.Red, shape = RoundedCornerShape(bottomEnd = 6.dp, topEnd = 6.dp))
-        ) {
-            Text(text = "50.000 vnd", color = Color.White)
-        }
+            text = "50.000 vnd"
+        )
     }
 }
 

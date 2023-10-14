@@ -72,16 +72,8 @@ fun HomeVendingMachineScreen(navController: NavController) {
                     Text("Data from TTYS4: $dataFromTTYS4")
                     VendingMachineButtonComposable(
                         onClick = { homeVendingMachineViewModel.writeByteArrayToPort() },
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                            .clip(RoundedCornerShape(6.dp))
-                            .background(
-                                color = Color.Red,
-                                shape = RoundedCornerShape(6.dp)
-                            )
-                    ) {
-                        Text(text = "GET", color = Color.White)
-                    }
+                        text = "GET"
+                    )
                     InformationVendingMachineComposable(navController)
                     ListProductVendingMachineComposable(
                         onTurnOnClick = { homeVendingMachineViewModel.showVideoAds() }

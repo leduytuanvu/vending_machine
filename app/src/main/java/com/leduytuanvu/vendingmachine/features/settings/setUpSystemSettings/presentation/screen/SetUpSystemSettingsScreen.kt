@@ -1,7 +1,10 @@
 package com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.presentation.screen
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
@@ -31,8 +35,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.presentation.composables.cashBoxTypeSetUpSystemSettings.CashBoxTypeSetUpSystemSettingsComposable
+import com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.presentation.composables.cashBoxTypeSetUpSystemSettings.CashBoxTypeSetUpSystemSettingsViewModel
+import com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.presentation.composables.lightSetUpSystemSettings.LightSetUpSystemSettingsComposable
 import com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.presentation.composables.portSetUpSystemSettings.PortSetUpSystemSettingsComposable
 import com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.presentation.composables.portSetUpSystemSettings.PortSetUpSystemSettingsViewModel
+import com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.presentation.composables.vendingMachineTypeSetUpSystemSettings.VendingMachineSetUpSystemSettingsComposable
+import com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.presentation.composables.vendingMachineTypeSetUpSystemSettings.VendingMachineTypeSetUpSystemSettingsViewModel
 import com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.presentation.viewmodel.SetUpSystemSettingsViewModel
 import com.leduytuanvu.vendingmachine.ui.theme.vendingMachineResponsiveDp
 
@@ -40,10 +49,22 @@ import com.leduytuanvu.vendingmachine.ui.theme.vendingMachineResponsiveDp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetUpSystemSettingsScreen(navController: NavController) {
-    val portSetUpSystemSettingsViewModel: PortSetUpSystemSettingsViewModel = hiltViewModel()
-    val isLoading by portSetUpSystemSettingsViewModel.setUpSystemSettingsRepositoryImpl.isLoading.collectAsState()
-
     val setUpSystemSettingsViewModel: SetUpSystemSettingsViewModel = hiltViewModel()
+    val portSetUpSystemSettingsViewModel: PortSetUpSystemSettingsViewModel = hiltViewModel()
+    val vendingMachineTypeSetUpSystemSettingsViewModel: VendingMachineTypeSetUpSystemSettingsViewModel = hiltViewModel()
+    val cashBoxTypeSetUpSystemSettingsViewModel: CashBoxTypeSetUpSystemSettingsViewModel = hiltViewModel()
+
+    val isLoadingSetUpSystemSettingsViewModel by setUpSystemSettingsViewModel.isLoading.collectAsState()
+    val isLoadingPortSetUpSystemSettingsViewModel by portSetUpSystemSettingsViewModel.isLoading.collectAsState()
+    val isLoadingVendingMachineTypeSetUpSystemSettingsViewModel by vendingMachineTypeSetUpSystemSettingsViewModel.isLoading.collectAsState()
+    val isLoadingCashBoxTypeSetUpSystemSettingsViewModel by cashBoxTypeSetUpSystemSettingsViewModel.isLoading.collectAsState()
+
+    val isLoading =
+        isLoadingSetUpSystemSettingsViewModel ||
+        isLoadingPortSetUpSystemSettingsViewModel ||
+        isLoadingVendingMachineTypeSetUpSystemSettingsViewModel ||
+        isLoadingCashBoxTypeSetUpSystemSettingsViewModel
+
     val currentSelected by setUpSystemSettingsViewModel.currentSelected.collectAsState()
 
     Box {
@@ -89,11 +110,29 @@ fun SetUpSystemSettingsScreen(navController: NavController) {
         ) {
             innerPadding ->
             val modifier = Modifier.padding(innerPadding)
-            Column(modifier = modifier.background(Color.White)) {
-                LazyRow {
+            Column(modifier = modifier.background(Color.White).padding(top = 0.4.dp)) {
+                LazyRow(modifier = Modifier
+                    .border(0.6.dp, Color.LightGray, RoundedCornerShape(0.dp))
+                    .padding(4.dp)) {
                     items(setUpSystemSettingsViewModel.itemsList.size) { index ->
+                        val vendingMachineBorder = animateDpAsState(
+                            targetValue = if (currentSelected == setUpSystemSettingsViewModel.itemsList[index]) 1.dp else 0.dp
+                        ).value
+
+                        val vendingMachineBorderColor = animateColorAsState(
+                            targetValue = if (currentSelected == setUpSystemSettingsViewModel.itemsList[index]) Color.Gray else Color.Transparent
+                        ).value
+
+                        val vendingMachineBackground = animateColorAsState(
+                            targetValue = if (currentSelected == setUpSystemSettingsViewModel.itemsList[index]) Color.LightGray else Color.White
+                        ).value
                         Box(modifier = Modifier
                             .background(if (currentSelected == setUpSystemSettingsViewModel.itemsList[index]) Color.LightGray else Color.White)
+                            .border(
+                                vendingMachineBorder,
+                                vendingMachineBorderColor,
+                                RoundedCornerShape(4.dp)
+                            )
                             .clickable {
                                 setUpSystemSettingsViewModel.selectItem(
                                     setUpSystemSettingsViewModel.itemsList[index]
@@ -109,8 +148,10 @@ fun SetUpSystemSettingsScreen(navController: NavController) {
                     }
                 }
                 when (currentSelected) {
-                    "PORT" -> PortSetUpSystemSettingsComposable()
-                    "LIGHT" -> Text("Content of Light")
+                    "VENDING MACHINE TYPE" -> VendingMachineSetUpSystemSettingsComposable()
+                    "CASH BOX TYPE" -> CashBoxTypeSetUpSystemSettingsComposable()
+                    "PORT" -> PortSetUpSystemSettingsComposable(isVisible = true)
+                    "LIGHT" -> LightSetUpSystemSettingsComposable()
                 }
             }
         }
@@ -125,11 +166,9 @@ fun SetUpSystemSettingsScreen(navController: NavController) {
             ) {
                 CircularProgressIndicator(
                     color = Color.White,
-                    modifier = Modifier.padding(bottom = 20.dp)
+                    modifier = Modifier.padding(bottom = 10.dp)
                 )
             }
         }
     }
-
-
 }

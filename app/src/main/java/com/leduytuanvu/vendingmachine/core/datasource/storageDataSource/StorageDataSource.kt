@@ -6,58 +6,58 @@ import android.util.Log
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import javax.inject.Inject
 
 @SuppressLint("SdCardPath")
 class StorageDataSource @Inject constructor() {
-    val pathFileAds = "/sdcard/AVF/ADS/"
-    val pathFileAdsPhone = "/storage/emulated/0/Documents/ADS/"
-    val pathFileProduct = "/sdcard/avfdata/product/"
+    val pathFileAds = "/sdcard/vending_machine/ads/"
 
+    val pathFileJsonSetUpVendingMachinePort = "/sdcard/vending_machine_data/settings/set_up_system/set_up_port/vending_machine_port.json"
+    val pathFileJsonSetUpCashBoxPort = "/sdcard/vending_machine_data/settings/set_up_system/set_up_port/cash_box_port.json"
+    val pathFileJsonSetUpMachineType = "/sdcard/vending_machine_data/settings/set_up_system/set_up_vending_machine/set_up_vending_machine_type.json"
+    val pathFileJsonSetUpCashBoxType = "/sdcard/vending_machine_data/settings/set_up_system/set_up_cash_box/set_up_cash_box_type.json"
+    val pathFileJsonListOfProductForSale = "/sdcard/vending_machine_data/products/list_product_for_sale.json"
+    val pathFileJsonListOfProductGetFromServer = "/sdcard/vending_machine_data/products/list_product_get_from_server.json"
 
-    fun checkFile(filePath: String): Boolean {
-        val file = File(filePath)
-        return file.exists() && file.isDirectory
+    fun folderIsExist(folderPath: String): Boolean {
+        val folder = File(folderPath)
+        return folder.exists() && folder.isDirectory
     }
 
-    fun createFile(filePath: String): Boolean {
-        return if (!checkFile(filePath)) {
+    fun fileIsExist(filePath: String): Boolean {
+        val file = File(filePath)
+        return file.exists()
+    }
+
+    fun createFileIsSuccess(filePath: String): Boolean {
+        return if (!fileIsExist(filePath)) {
             File(filePath).mkdirs()
         } else {
             false
         }
     }
 
-    fun saveData(jsonData: String, filePath: String) {
+    fun saveJsonToStorage(jsonData: String, filePath: String) {
         val file = File(filePath)
-        try {
-            file.parentFile?.mkdirs()
-            file.createNewFile()
-            val fileOutputStream = FileOutputStream(file)
-            fileOutputStream.write(jsonData.toByteArray())
-            fileOutputStream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+        file.parentFile?.mkdirs()
+        file.createNewFile()
+        val fileOutputStream = FileOutputStream(file)
+        fileOutputStream.write(jsonData.toByteArray())
+        fileOutputStream.close()
     }
 
-    fun readData(filePath: String): String {
-        var jsonData = ""
-        try {
-            val file = File(filePath)
-            val fileInputStream = FileInputStream(file)
-            jsonData = fileInputStream.readBytes().toString(Charsets.UTF_8)
-            fileInputStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+    fun readJsonFromStorage(filePath: String): String {
+        val file = File(filePath)
+        val fileInputStream = FileInputStream(file)
+        val jsonData = fileInputStream.readBytes().toString(Charsets.UTF_8)
+        fileInputStream.close()
         return jsonData
     }
 
-    fun getListVideoAds() : ArrayList<String> {
+    // Get list video ads from storage
+    fun getListVideoAdsFromStorage() : ArrayList<String> {
         val listPath = ArrayList<String>()
         val directory = File(pathFileAds)
         val files: Array<File>? = directory.listFiles()
@@ -68,69 +68,20 @@ class StorageDataSource @Inject constructor() {
         return listPath
     }
 
-    fun saveVideoAds(context: Context, rawResId: Int, fileName: String) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-//            ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            ActivityCompat.requestPermissions(
-//                context as Activity,
-//                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-//                1
-//            )
-//            return
-//        }
+    // Save video ads from asset to storage
+    fun saveVideoAdsFromAssetToStorage(context: Context, rawResId: Int, fileName: String) {
         val dir = File(pathFileAds)
         if (!dir.exists()) dir.mkdirs()
         val file = File(pathFileAds, fileName)
-        try {
-            val inputStream: InputStream = context.resources.openRawResource(rawResId)
-            val outputStream: OutputStream = FileOutputStream(file)
-            val buffer = ByteArray(1024)
-            var length: Int
-            while (inputStream.read(buffer).also { length = it } > 0) {
-                outputStream.write(buffer, 0, length)
-            }
-            outputStream.flush()
-            outputStream.close()
-            inputStream.close()
-            Log.d("SaveVideo", "Video Saved at ${file.absolutePath}")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Log.e("SaveVideo", "Error: ${e.message}")
+        val inputStream: InputStream = context.resources.openRawResource(rawResId)
+        val outputStream: OutputStream = FileOutputStream(file)
+        val buffer = ByteArray(1024)
+        var length: Int
+        while (inputStream.read(buffer).also { length = it } > 0) {
+            outputStream.write(buffer, 0, length)
         }
-    }
-
-    fun getListVideoAdsPhone() : ArrayList<String> {
-        val listPath = ArrayList<String>()
-        val directory = File(pathFileAdsPhone)
-        val files: Array<File>? = directory.listFiles()
-        files?.forEach { file ->
-            listPath.add(file.absolutePath)
-            Log.d("FileList", "File: ${file.absolutePath}")
-        }
-        return listPath
-    }
-
-    fun saveVideoAdsPhone(context: Context, rawResId: Int, fileName: String) {
-        try {
-            val dir = File(pathFileAdsPhone)
-            Log.d("SaveVideo", "Video Saved at $pathFileAdsPhone")
-            if (!dir.exists()) dir.mkdirs()
-            val file = File(pathFileAdsPhone, fileName)
-
-            val inputStream: InputStream = context.resources.openRawResource(rawResId)
-            val outputStream: OutputStream = FileOutputStream(file)
-            val buffer = ByteArray(1024)
-            var length: Int
-            while (inputStream.read(buffer).also { length = it } > 0) {
-                outputStream.write(buffer, 0, length)
-            }
-            outputStream.flush()
-            outputStream.close()
-            inputStream.close()
-            Log.d("SaveVideo", "Video Saved at ${file.absolutePath}")
-        } catch (e: Exception) {
-            Log.d("SaveVideo", "Video Saved at ${e.message}")
-        }
+        outputStream.flush()
+        outputStream.close()
+        inputStream.close()
     }
 }

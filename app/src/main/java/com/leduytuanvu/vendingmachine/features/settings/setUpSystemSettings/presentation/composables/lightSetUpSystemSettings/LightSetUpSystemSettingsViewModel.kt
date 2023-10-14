@@ -30,4 +30,10 @@ class LightSetUpSystemSettingsViewModel @Inject constructor(
             setUpSystemSettingsRepositoryImpl.setLoading(false)
         }
     }
+
+    fun turnOnLight() {
+        viewModelScope.launch {
+
+        }
+    }
 }

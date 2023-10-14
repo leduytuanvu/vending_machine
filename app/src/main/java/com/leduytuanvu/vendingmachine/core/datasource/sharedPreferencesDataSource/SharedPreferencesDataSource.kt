@@ -3,7 +3,7 @@ package com.leduytuanvu.vendingmachine.core.datasource.sharedPreferencesDataSour
 import android.content.Context
 import android.content.SharedPreferences
 import com.leduytuanvu.vendingmachine.core.common.AppConstants
-import com.leduytuanvu.vendingmachine.core.common.AppThemeEnums
+import com.leduytuanvu.vendingmachine.ui.theme.ThemeType
 import javax.inject.Inject
 
 class SharedPreferencesDataSource @Inject constructor(private val context: Context) {
@@ -58,6 +58,6 @@ class SharedPreferencesDataSource @Inject constructor(private val context: Conte
 
     // Get theme shared preference
     fun getTheme(): String {
-        return getString(AppConstants.PREF_THEME, AppThemeEnums.LIGHT.value)
+        return getString(AppConstants.PREF_THEME, ThemeType.LIGHT.value)
     }
 }

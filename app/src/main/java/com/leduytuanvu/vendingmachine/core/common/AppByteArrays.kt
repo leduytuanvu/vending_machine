@@ -1,7 +1,7 @@
 package com.leduytuanvu.vendingmachine.core.common
 
 object AppByteArrays {
-    // TTYS3
+    // Vending machine
     val vendingMachinePollStatus = byteArrayOf(0x02, 0x00, 0x04, 0x00, 0x00, 0x9E.toByte(), 0x00, 0x03, 0xB9.toByte(), 0xE1.toByte())
     val vendingMachineTurnOnLight = byteArrayOf(0x00, 0xFF.toByte(), 0xDD.toByte(), 0x22, 0xAA.toByte(),0x55)
     val vendingMachineTurnOffLight = byteArrayOf(0x00, 0xFF.toByte(), 0xDD.toByte(), 0x22, 0x55, 0xAA.toByte())
@@ -9,7 +9,8 @@ object AppByteArrays {
 
 
 
-    // TTYS4
+    // Cash box
     val cashBoxPollStatus = byteArrayOf(0x03, 0x00, 0x01, 0x00, 0x19, 0x1B.toByte())
     val cashBoxReset = byteArrayOf(0x03, 0x00, 0x01, 0x00, 0x0A.toByte(), 0x08)
+    val cashBoxEnable123456789 = byteArrayOf(0x03, 0x02, 0x01, 0x00, 0x15, 0x01, 0xFF.toByte(), 0xEB.toByte())
 }

@@ -44,12 +44,6 @@ import com.leduytuanvu.vendingmachine.ui.composables.button.VendingMachineButton
 fun TestSettingsScreen(navController: NavController) {
     val viewModel: HomeSettingsViewModel = hiltViewModel()
 
-    val buttonModifier = Modifier
-        .clip(RoundedCornerShape(6.dp))
-        .height(50.dp)
-        .background(color = Color.Red, shape = RoundedCornerShape(6.dp))
-        .fillMaxWidth()
-
     val textModifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
 
     Scaffold (
@@ -97,10 +91,8 @@ fun TestSettingsScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(8.dp))
                 VendingMachineButtonComposable(
                     onClick = { navController.navigate("setUpSystemSettings") },
-                    modifier = buttonModifier
-                ) {
-                    Text(modifier = textModifier, text = "Reset", style = MaterialTheme.typography.titleSmall)
-                }
+                    text = "Reset"
+                )
                 Spacer(modifier = Modifier.height(8.dp))
 
 
@@ -121,20 +113,16 @@ fun TestSettingsScreen(navController: NavController) {
 
                     VendingMachineButtonComposable(
                         onClick = { navController.navigate("setUpSystemSettings") },
-                        modifier = buttonModifier.weight(2f)
-                    ) {
-                        Text(modifier = textModifier, text = "Set one slot as belt slot", style = MaterialTheme.typography.titleSmall)
-                    }
+                        text = "Set one slot as belt slot"
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 VendingMachineButtonComposable(
                     onClick = { navController.navigate("setUpSystemSettings") },
-                    modifier = buttonModifier
-                ) {
-                    Text(modifier = textModifier, text = "Set all slot as belt slot", style = MaterialTheme.typography.titleSmall)
-                }
+                    text = "Set all slot as belt slot"
+                )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -153,20 +141,16 @@ fun TestSettingsScreen(navController: NavController) {
 
                     VendingMachineButtonComposable(
                         onClick = { navController.navigate("setUpSystemSettings") },
-                        modifier = buttonModifier.weight(2f)
-                    ) {
-                        Text(modifier = textModifier, text = "Set one slot as spiral slot", style = MaterialTheme.typography.titleSmall)
-                    }
+                        text = "Set one slot as spiral slot"
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 VendingMachineButtonComposable(
                     onClick = { navController.navigate("setUpSystemSettings") },
-                    modifier = buttonModifier
-                ) {
-                    Text(modifier = textModifier, text = "Set all slot as spiral slot", style = MaterialTheme.typography.titleSmall)
-                }
+                    text = "Set all slot as spiral slot"
+                )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -174,10 +158,8 @@ fun TestSettingsScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(8.dp))
                 VendingMachineButtonComposable(
                     onClick = { navController.navigate("setUpSystemSettings") },
-                    modifier = buttonModifier
-                ) {
-                    Text(modifier = textModifier, text = "Turn on", style = MaterialTheme.typography.titleSmall)
-                }
+                    text = "Turn on"
+                )
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }

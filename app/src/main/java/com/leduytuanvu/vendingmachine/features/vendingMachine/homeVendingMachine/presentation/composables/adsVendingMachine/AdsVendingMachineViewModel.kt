@@ -20,51 +20,18 @@ class AdsVendingMachineViewModel @Inject constructor(
 
     var listAds = ArrayList<String>()
 
-//    Board android
     init {
         try {
-            listAds = storageDataSource.getListVideoAds()
+            listAds = storageDataSource.getListVideoAdsFromStorage()
             if (listAds.isEmpty()) {
-                storageDataSource.saveVideoAds(context, R.raw.ads1, "ads1.mp4")
-                storageDataSource.saveVideoAds(context, R.raw.ads2, "ads2.mp4")
-                storageDataSource.saveVideoAds(context, R.raw.ads3, "ads3.mp4")
-                listAds = storageDataSource.getListVideoAds()
+                storageDataSource.saveVideoAdsFromAssetToStorage(context, R.raw.ads1, "ads1.mp4")
+                storageDataSource.saveVideoAdsFromAssetToStorage(context, R.raw.ads2, "ads2.mp4")
+                storageDataSource.saveVideoAdsFromAssetToStorage(context, R.raw.ads3, "ads3.mp4")
+                listAds = storageDataSource.getListVideoAdsFromStorage()
             }
         } catch (throwable: Throwable) {
             ErrorHandler.handle(context, throwable)
         }
-    }
-
-    // Phone
-//    init {
-//        try {
-//            listAds = storageDataSource.getListVideoAdsPhone()
-//            if (listAds.isEmpty()) {
-//                Logger.info("listAds.isEmpty()")
-//                storageDataSource.saveVideoAdsPhone(context, R.raw.ads1, "ads1.mp4")
-//                storageDataSource.saveVideoAdsPhone(context, R.raw.ads2, "ads2.mp4")
-//                storageDataSource.saveVideoAdsPhone(context, R.raw.ads3, "ads3.mp4")
-//                listAds = storageDataSource.getListVideoAdsPhone()
-//            }
-//        } catch (throwable: Throwable) {
-//            ErrorHandler.handle(context, throwable)
-//        }
-//    }
-
-    fun getListVideoAds(): ArrayList<String> {
-        try {
-            listAds = storageDataSource.getListVideoAdsPhone()
-            if (listAds.isEmpty()) {
-                Logger.info("listAds.isEmpty()")
-                storageDataSource.saveVideoAdsPhone(context, R.raw.ads1, "ads1.mp4")
-                storageDataSource.saveVideoAdsPhone(context, R.raw.ads2, "ads2.mp4")
-                storageDataSource.saveVideoAdsPhone(context, R.raw.ads3, "ads3.mp4")
-                listAds = storageDataSource.getListVideoAdsPhone()
-            }
-        } catch (throwable: Throwable) {
-            ErrorHandler.handle(context, throwable)
-        }
-        return listAds
     }
 
     fun turnOffAds() {

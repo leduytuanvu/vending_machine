@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import com.leduytuanvu.vendingmachine.ui.composables.button.VendingMachineButtonComposable
 
 //@Composable
@@ -81,19 +82,20 @@ fun AdsVendingMachineComposable(onTurnOffClick: () -> Unit) {
     var currentVideoIndex by remember { mutableStateOf(0) }
     val videoAspectRatio = 16f / 9f
     val videoHeight = screenWidth / videoAspectRatio
-
     val videoView = remember { mutableStateOf<VideoView?>(null) }
 
     Box(
         modifier = Modifier
             .height(videoHeight)
             .fillMaxWidth()
-            .background(Color.Black)
+            .background(Color.Transparent)
     ) {
+        Box(modifier = Modifier.fillMaxSize().background(Color.White))
         AndroidView(
             modifier = Modifier.fillMaxSize(),
             factory = {
                 VideoView(context).apply {
+                    setBackgroundColor(Color.Transparent.toArgb())
                     setOnCompletionListener {
                         currentVideoIndex = (currentVideoIndex + 1) % viewModel.listAds.size
                         setVideoPath(viewModel.listAds[currentVideoIndex])
@@ -116,16 +118,7 @@ fun AdsVendingMachineComposable(onTurnOffClick: () -> Unit) {
 
         VendingMachineButtonComposable(
             onClick = { onTurnOffClick() },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(bottom = 8.dp)
-                .clip(RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp))
-                .background(
-                    color = Color.Red,
-                    shape = RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp)
-                )
-        ) {
-            Text(text = "Turn off", color = Color.White)
-        }
+            text = "urn off"
+        )
     }
 }

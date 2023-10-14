@@ -20,6 +20,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+enum class ThemeType(val id: Int, val value: String) {
+    LIGHT(1, "LIGHT"),
+    DARK(2, "DARK");
+
+    fun getInfo() = "ID: $id, DESCRIPTION: $value"
+}
+
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
@@ -34,16 +41,16 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
+    primary = Blue80,
+    secondary = Blue80,
+    tertiary = Blue80,
     background = Color.Transparent,
-    surface = PurpleGrey40,
-    onPrimary = PurpleGrey40,
-    onSecondary = PurpleGrey40,
-    onTertiary = PurpleGrey40,
-    onBackground = PurpleGrey40,
-    onSurface = PurpleGrey40,
+    surface = Blue80,
+    onPrimary = Blue80,
+    onSecondary = Blue80,
+    onTertiary = Blue80,
+    onBackground = Blue80,
+    onSurface = Blue80,
 )
 
 @Composable

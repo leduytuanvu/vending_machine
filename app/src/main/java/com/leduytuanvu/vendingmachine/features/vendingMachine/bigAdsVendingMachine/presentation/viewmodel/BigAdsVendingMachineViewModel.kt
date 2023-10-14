@@ -14,7 +14,7 @@ import javax.inject.Inject
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class BigAdsVendingMachineViewModel @Inject constructor(
-    storageDataSource: StorageDataSource,
+    private val storageDataSource: StorageDataSource,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -22,21 +22,13 @@ class BigAdsVendingMachineViewModel @Inject constructor(
 
     init {
         try {
-            listAds = storageDataSource.getListVideoAds()
+            listAds = storageDataSource.getListVideoAdsFromStorage()
             if (listAds.isEmpty()) {
-                storageDataSource.saveVideoAds(context, R.raw.ads1, "ads1.mp4")
-                storageDataSource.saveVideoAds(context, R.raw.ads2, "ads2.mp4")
-                storageDataSource.saveVideoAds(context, R.raw.ads3, "ads3.mp4")
-                listAds = storageDataSource.getListVideoAds()
+                storageDataSource.saveVideoAdsFromAssetToStorage(context, R.raw.ads1, "ads1.mp4")
+                storageDataSource.saveVideoAdsFromAssetToStorage(context, R.raw.ads2, "ads2.mp4")
+                storageDataSource.saveVideoAdsFromAssetToStorage(context, R.raw.ads3, "ads3.mp4")
+                listAds = storageDataSource.getListVideoAdsFromStorage()
             }
-        } catch (throwable: Throwable) {
-            ErrorHandler.handle(context, throwable)
-        }
-    }
-
-    fun turnOffAds() {
-        try {
-            Logger.info("Turn off ads clicked")
         } catch (throwable: Throwable) {
             ErrorHandler.handle(context, throwable)
         }

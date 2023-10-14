@@ -2,13 +2,9 @@ package com.leduytuanvu.vendingmachine.core.datasource.portConnectionDataSource
 
 import android.annotation.SuppressLint
 import android.util.Pair
-import android.util.Log
-import com.leduytuanvu.vendingmachine.core.common.AppByteArrays
 import com.leduytuanvu.vendingmachine.core.utils.Logger
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,23 +34,31 @@ class PortConnectionDataSource {
     // Status of cash box
     private var fdPortCashBox: Int = -1
 
-    fun checkConnectPortVendingMachine(port: String) : Int {
-        return portConnectionHelperDataSource.openPortVendingMachine("/dev/", port, 9600)
+    // Open port vending machine
+    fun openPortVendingMachine(port: String) : Int {
+        fdPortVendingMachine = portConnectionHelperDataSource.openPortVendingMachine("/dev/", port, 9600)
+        var status = "open"
+        if (fdPortVendingMachine == -1) status = "close"
+        Logger.info("PortConnectionDataSource: port vending machine is $status")
+        return fdPortVendingMachine
     }
 
-    fun checkConnectPortCashBox(port: String) : Int {
-        return portConnectionHelperDataSource.openPortCashBox("/dev/", port, 9600)
+    // Open port cash box
+    fun openPortCashBox(port: String) : Int {
+        fdPortCashBox = portConnectionHelperDataSource.openPortCashBox("/dev/", port, 9600)
+        var status = "open"
+        if (fdPortCashBox == -1) status = "close"
+        Logger.info("PortConnectionDataSource: port cash box is $status")
+        return fdPortCashBox
     }
 
-    fun fetchPortStatuses(): Array<Pair<String, Boolean>> {
-        return portConnectionHelperDataSource.getAllSerialPortsStatus()
-    }
-
+    // Make data empty
     fun makeDataEmpty() {
         _dataFromCashBox.value = ""
         _dataFromVendingMachine.value = ""
     }
 
+    // Get all serial ports
     fun getAllSerialPorts(): Array<String> {
         val listSerialPort = portConnectionHelperDataSource.getAllSerialPorts()
         coroutineScope.launch { _listSerialPort.emit(listSerialPort) }
@@ -62,28 +66,15 @@ class PortConnectionDataSource {
         return listSerialPort
     }
 
-    // Connect vending machine port
-    fun connectVendingMachinePort() {
-        fdPortVendingMachine = portConnectionHelperDataSource.openPortVendingMachine("/dev/", "ttyS4", 9600)
-        var status = "open"
-        if (fdPortVendingMachine == -1) status = "close"
-        Logger.info("PortConnectionDataSource: port vending machine is $status")
-    }
-    // Connect cash box ports
-    fun connectCashBoxPort() {
-        fdPortCashBox = portConnectionHelperDataSource.openPortCashBox("/dev/", "ttyS3", 9600)
-        var status = "open"
-        if (fdPortCashBox == -1) status = "close"
-        Logger.info("PortConnectionDataSource: port cash box is $status")
-    }
-
-    // Disconnect vending machine ports
-    fun disconnectVendingMachinePort() {
+    // Close vending machine ports
+    fun closeVendingMachinePort() {
         portConnectionHelperDataSource.closePortVendingMachine()
+        Logger.info("PortConnectionDataSource: port vending machine is disconnected")
     }
-    // Disconnect cash box ports
-    fun disconnectCashBoxPort() {
+    // Close cash box ports
+    fun closeCashBoxPort() {
         portConnectionHelperDataSource.closePortCashBox()
+        Logger.info("PortConnectionDataSource: port cash box is disconnected")
     }
 
     // Start reading vending machine ports
@@ -101,6 +92,7 @@ class PortConnectionDataSource {
         override fun run() {
             Logger.info("PortConnectionDataSource: start read thread vending machine")
             while (!currentThread().isInterrupted) {
+                Logger.info("111")
                 try {
                     portConnectionHelperDataSource.startReadingVendingMachine(512) { data ->
                         val dataHexString = byteArrayToHexString(data)
@@ -122,6 +114,7 @@ class PortConnectionDataSource {
         override fun run() {
             Logger.info("PortConnectionDataSource: start read thread cash box")
             while (!currentThread().isInterrupted) {
+                Logger.info("222")
                 try {
                     portConnectionHelperDataSource.startReadingCashBox(512) { data ->
                         val dataHexString = byteArrayToHexString(data)

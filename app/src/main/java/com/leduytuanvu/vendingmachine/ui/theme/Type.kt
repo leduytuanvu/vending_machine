@@ -19,7 +19,8 @@ fun vendingMachineResponsiveTypography(): Typography {
             fontWeight = FontWeight.Normal,
             fontSize = vendingMachineResponsiveSize(14f).sp,
             lineHeight = vendingMachineResponsiveSize(24f).sp,
-            letterSpacing = vendingMachineResponsiveLetterSpacing(0.4f).sp
+            letterSpacing = vendingMachineResponsiveLetterSpacing(0.4f).sp,
+            color = Color.Black
         ),
         bodyMedium = TextStyle(
             fontFamily = FontFamily.Default,
@@ -27,19 +28,20 @@ fun vendingMachineResponsiveTypography(): Typography {
             fontSize = vendingMachineResponsiveSize(16f).sp,
             lineHeight = vendingMachineResponsiveSize(26f).sp,
             letterSpacing = vendingMachineResponsiveLetterSpacing(0.6f).sp,
-            color = Color.White
+            color = Color.Black
         ),
         bodyLarge = TextStyle(
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.Normal,
             fontSize = vendingMachineResponsiveSize(18f).sp,
             lineHeight = vendingMachineResponsiveSize(28f).sp,
-            letterSpacing = vendingMachineResponsiveLetterSpacing(0.8f).sp
+            letterSpacing = vendingMachineResponsiveLetterSpacing(0.8f).sp,
+            color = Color.Black
         ),
 
         titleSmall = TextStyle(
             fontFamily = FontFamily.Default,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight.Bold,
             fontSize = vendingMachineResponsiveSize(20f).sp,
             lineHeight = vendingMachineResponsiveSize(28f).sp,
             letterSpacing = vendingMachineResponsiveLetterSpacing(0f).sp,
@@ -47,18 +49,19 @@ fun vendingMachineResponsiveTypography(): Typography {
         ),
         titleMedium = TextStyle(
             fontFamily = FontFamily.Default,
-            fontWeight = FontWeight.Normal,
-            fontSize = vendingMachineResponsiveSize(22f).sp,
+            fontWeight = FontWeight.Bold,
+            fontSize = vendingMachineResponsiveSize(24f).sp,
             lineHeight = vendingMachineResponsiveSize(30f).sp,
             letterSpacing = vendingMachineResponsiveLetterSpacing(0.2f).sp,
             color = Color.White
         ),
         titleLarge = TextStyle(
             fontFamily = FontFamily.Default,
-            fontWeight = FontWeight.Normal,
-            fontSize = vendingMachineResponsiveSize(24f).sp,
+            fontWeight = FontWeight.Bold,
+            fontSize = vendingMachineResponsiveSize(28f).sp,
             lineHeight = vendingMachineResponsiveSize(32f).sp,
-            letterSpacing = vendingMachineResponsiveLetterSpacing(0.4f).sp
+            letterSpacing = vendingMachineResponsiveLetterSpacing(0.4f).sp,
+            color = Color.White
         ),
 
         labelSmall = TextStyle(
@@ -66,21 +69,24 @@ fun vendingMachineResponsiveTypography(): Typography {
             fontWeight = FontWeight.Medium,
             fontSize = vendingMachineResponsiveSize(12f).sp,
             lineHeight = vendingMachineResponsiveSize(16f).sp,
-            letterSpacing = vendingMachineResponsiveLetterSpacing(0.4f).sp
+            letterSpacing = vendingMachineResponsiveLetterSpacing(0.4f).sp,
+            color = Color.Black
         ),
         labelMedium = TextStyle(
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.Medium,
             fontSize = vendingMachineResponsiveSize(14f).sp,
             lineHeight = vendingMachineResponsiveSize(18f).sp,
-            letterSpacing = vendingMachineResponsiveLetterSpacing(0.6f).sp
+            letterSpacing = vendingMachineResponsiveLetterSpacing(0.6f).sp,
+            color = Color.Black
         ),
         labelLarge = TextStyle(
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.Medium,
             fontSize = vendingMachineResponsiveSize(16f).sp,
             lineHeight = vendingMachineResponsiveSize(20f).sp,
-            letterSpacing = vendingMachineResponsiveLetterSpacing(0.8f).sp
+            letterSpacing = vendingMachineResponsiveLetterSpacing(0.8f).sp,
+            color = Color.Black
         )
     )
 }

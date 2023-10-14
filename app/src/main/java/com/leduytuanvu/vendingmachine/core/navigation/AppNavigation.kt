@@ -1,6 +1,7 @@
 package com.leduytuanvu.vendingmachine.core.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,12 +13,17 @@ import com.leduytuanvu.vendingmachine.features.settings.setUpProductSettings.pre
 import com.leduytuanvu.vendingmachine.features.settings.setUpSlotSettings.presentation.screen.SetUpSlotSettingsScreen
 import com.leduytuanvu.vendingmachine.features.settings.setUpSystemSettings.presentation.screen.SetUpSystemSettingsScreen
 import com.leduytuanvu.vendingmachine.features.settings.testSettings.presentation.screen.TestSettingsScreen
+import com.leduytuanvu.vendingmachine.features.splash.presentation.screen.SplashScreen
 import com.leduytuanvu.vendingmachine.features.vendingMachine.homeVendingMachine.presentation.screen.HomeVendingMachineScreen
+import javax.inject.Inject
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "homeVendingMachine") {
+    NavHost(navController = navController, startDestination = "splash") {
+        composable("splash") {
+            SplashScreen(navController)
+        }
         composable("homeVendingMachine") {
             HomeVendingMachineScreen(navController)
         }
